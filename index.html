@@ -1,1 +1,36 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>¿quién eres?</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <script src="https://unpkg.com/@gohai/p5.webserial@^1/libraries/p5.webserial.js"></script>
+  <script src="https://unpkg.com/hydra-synth"></script>
+  <style>
+    body { margin: 0; background: black; overflow: hidden; }
+    #hydra { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+    #pregunta {
+      position: fixed; inset: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8vw; box-sizing: border-box;
+      text-align: center;
+      color: #fff;
+      font: 700 clamp(28px, 5vw, 80px)/1.2 "Helvetica Neue", Arial, sans-serif;
+      text-shadow: 0 0 8px #000;
+      pointer-events: none;
+    }
+    #boton { position: fixed; top: 10px; left: 10px; z-index: 10; }
+    #debug { position: fixed; bottom: 10px; left: 10px; color: #777;
+             font: 14px monospace; z-index: 10; }
+  </style>
+</head>
+<body>
+  <canvas id="hydra"></canvas>
+  <div id="pregunta"></div>
+  <button id="boton">Conectar Arduino</button>
+  <div id="debug"></div>
+  <iframe id="sonido" src="sonido.html" allow="autoplay"
+  style="position:fixed; width:1px; height:1px; border:0; opacity:0; pointer-events:none;"></iframe>
+  <script src="sketch.js"></script>
+</body>
+</html>
