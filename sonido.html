@@ -1,1 +1,53 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>sonido</title>
+  <script src="https://unpkg.com/@strudel/repl@1.3.0"></script>
+</head>
+<body style="margin:0; background:#111;">
+<script>
+  const CODIGO = `
+// bancos de sonidos adicionales
+samples('github:tidalcycles/dirt-samples')
+
+$:sound ("<ms404_bd d ms404_bd <ms404_bd*2 d>>").mask("<0@4 2@8>").gain(0.3)
+$:sound("gm_fx_echoes:9").gain(0.04).mask("<0@2 1@6>")
+$:sound ("<<piano:2 piano1:20> gm_glockenspiel>").mask("<0@8 1@8>").gain(0.5)
+$:sound ("<gm_tuba:4 gm_pad_choir gm_gunshot gm_epiano1>*2").mask("<2@8 0@8>").gain(0.5)
+$:sound ("bossdr110_bd <bossdr110_bd*2 <bossdr110_bd bossdr110_bd>*4 >").mask("<0@4 1@4>").gain(0.5)
+`;
+
+  const repl = document.createElement("strudel-editor");
+  repl.setAttribute("code", CODIGO);
+  document.body.append(repl);
+
+  let quiereSonar = false;
+  let sonando = false;
+
+  function actualizar() {
+    const ed = repl.editor;
+    if (!ed) { setTimeout(actualizar, 300); return; }   // el REPL todavía se está iniciando
+    if (quiereSonar && !sonando) {
+      sonando = true;
+      console.log("[sonido] tocando");
+      ed.evaluate();
+    } else if (!quiereSonar && sonando) {
+      sonando = false;
+      console.log("[sonido] detenido");
+      ed.stop();
+    }
+  }
+
+  window.addEventListener("message", (e) => {
+    if (e.origin !== location.origin) return;
+    console.log("[sonido] orden recibida: " + e.data);
+    if (e.data === "sonido:play") quiereSonar = true;
+    else if (e.data === "sonido:stop") quiereSonar = false;
+    else return;
+    actualizar();
+  });
+</script>
+</body>
+</html>
